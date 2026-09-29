@@ -6,19 +6,19 @@ import useAuthStore from '../store/authStore';
  * Unauthenticated users are redirected to /login.
  *
  * Refresh flow:
- *   1. Page loads → token in localStorage → token set in store, user = null, isLoading = true
- *   2. fetchCurrentUser (called in App.jsx) resolves → user set → ProtectedRoute re-renders → shows children
- *   3. If token expired → fetchCurrentUser clears token → ProtectedRoute sees !token → redirects
+ *   1. Page loads  token in localStorage token set in store, user = null, isLoading = true
+ *   2. fetchCurrentUser (called in App.jsx) resolves  user set  ProtectedRoute re-renders shows children
+ *   3. If token expired  fetchCurrentUser clears token  ProtectedRoute sees !token  redirects
  */
 export default function ProtectedRoute({ children }) {
   const { token, user, isLoading } = useAuthStore();
 
-  // No token at all — redirect immediately
+  // No token at all redirect immediately
   if (!token) {
     return <Navigate to="/login" replace />;
   }
 
-  // Token exists but user not yet hydrated — show spinner while fetchCurrentUser runs
+  // Token exists but user not yet hydrated show spinner while fetchCurrentUser runs
   if (isLoading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-navy-950">

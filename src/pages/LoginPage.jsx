@@ -10,7 +10,7 @@ export default function LoginPage() {
 
   const [form, setForm] = useState({ email: '', password: '' });
 
-  // Already logged in — go to dashboard
+  // Already logged in  go to dashboard
   if (user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">

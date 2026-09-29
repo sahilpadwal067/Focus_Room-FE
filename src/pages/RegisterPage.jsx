@@ -10,7 +10,7 @@ export default function RegisterPage() {
 
   const [form, setForm] = useState({ name: '', email: '', password: '' });
 
-  // Already logged in — go to dashboard
+  // Already logged in  go to dashboard
   if (user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
@@ -30,8 +30,8 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.password.length < 6) {
-      toast.error('Password must be at least 6 characters');
+    if (form.password.length < 8) {
+      toast.error('Password must be at least 8 characters');
       return;
     }
     const result = await register(form);
@@ -92,7 +92,7 @@ export default function RegisterPage() {
             <div>
               <label className="label">
                 Password
-                <span className="text-slate-400 font-normal ml-1">(min 6 characters)</span>
+                <span className="text-slate-400 font-normal ml-1">(min 8 characters)</span>
               </label>
               <input
                 type="password"

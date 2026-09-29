@@ -35,7 +35,7 @@ const benefits = [
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white text-slate-900">
-      {/* ── Nav ──────────────────────────────────────────── */}
+      {/*  Nav */}
       <nav className="border-b border-slate-200 bg-white sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -55,7 +55,7 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* ── Hero ─────────────────────────────────────────── */}
+      {/*  Hero */}
       <section className="relative overflow-hidden bg-slate-50">
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-24 sm:py-36 text-center">
           {/* Badge */}
@@ -94,8 +94,8 @@ export default function LandingPage() {
           <div className="mt-20 relative max-w-2xl mx-auto">
             <div className="card p-8 text-center shadow-lg">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium mb-6">
-                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                3 people focusing
+                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
+                Example Room · 3 participants
               </div>
               <div className="text-7xl sm:text-8xl font-mono font-bold text-slate-900 mb-2 tracking-tight">
                 24:37
@@ -126,7 +126,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Features ─────────────────────────────────────── */}
+      {/*  Features */}
       <section className="py-24 border-t border-slate-200 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
@@ -155,7 +155,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Benefits ─────────────────────────────────────── */}
+      {/*  Benefits */}
       <section className="py-24 border-t border-slate-200 bg-slate-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -179,28 +179,34 @@ export default function LandingPage() {
               </ul>
             </div>
 
-            {/* Stats block */}
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { label: "Today's Focus", value: '3h 45m', sub: 'across 9 sessions' },
-                { label: 'Current Streak', value: '12 days', sub: 'keep it up! 🔥' },
-                { label: 'Weekly Sessions', value: '47', sub: 'this week' },
-                { label: 'Rooms Active', value: '8', sub: 'right now' },
-              ].map(({ label, value, sub }) => (
-                <div key={label} className="card p-6 shadow-sm">
-                  <div className="text-2xl font-bold text-slate-900 mb-1">{value}</div>
-                  <div className="text-xs font-semibold text-emerald-600 uppercase tracking-wide mb-1">
-                    {label}
+            {/* Sample Analytics Preview */}
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-slate-300" />
+                Sample Analytics Preview
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { label: "Today's Focus", value: '3h 45m', sub: 'across 9 sessions (sample)' },
+                  { label: 'Current Streak', value: '12 days', sub: 'keep it up! 🔥' },
+                  { label: 'Weekly Sessions', value: '47', sub: 'sample weekly summary' },
+                  { label: 'Focus Target', value: '8 rooms', sub: 'weekly target' },
+                ].map(({ label, value, sub }) => (
+                  <div key={label} className="card p-6 shadow-sm">
+                    <div className="text-2xl font-bold text-slate-900 mb-1">{value}</div>
+                    <div className="text-xs font-semibold text-emerald-600 uppercase tracking-wide mb-1">
+                      {label}
+                    </div>
+                    <div className="text-xs text-slate-400">{sub}</div>
                   </div>
-                  <div className="text-xs text-slate-400">{sub}</div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── CTA ──────────────────────────────────────────── */}
+      {/*  CTA*/}
       <section className="py-24 border-t border-slate-200 bg-white">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">
@@ -219,7 +225,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Footer ───────────────────────────────────────── */}
+      {/*  Footer */}
       <footer className="border-t border-slate-200 py-8 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-400">
           <div className="flex items-center gap-2">

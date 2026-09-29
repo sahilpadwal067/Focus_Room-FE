@@ -5,7 +5,7 @@ import { Timer, Plus, Users, RefreshCw, Flame } from 'lucide-react';
 import useAuthStore from '../store/authStore';
 import api from '../services/api';
 
-// ── Sub-components ────────────────────────────────────────────────────────────
+//  Sub-components 
 
 function StatCard({ label, value, sub, icon: Icon, accent = 'emerald' }) {
   const colours = {
@@ -58,7 +58,7 @@ const EMPTY_STATS = {
   ],
 };
 
-// ── Main component ────────────────────────────────────────────────────────────
+// Main component 
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -72,7 +72,10 @@ export default function DashboardPage() {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await api.get('/dashboard/stats');
+      // F-12: Send the browser's IANA timezone so the server computes day/week
+      // boundaries in the user's local timezone rather than server local time.
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const { data } = await api.get('/dashboard/stats', { params: { tz } });
       setStats(data);
     } catch (err) {
       console.error('Dashboard stats error:', err);
@@ -96,7 +99,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
-      {/* ── Header ─────────────────────────────────────────────────────────── */}
+      {/*  Header  */}
       <header className="border-b border-slate-200 bg-white px-6 py-4 flex items-center justify-between sticky top-0 z-10">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center">
@@ -117,7 +120,7 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      {/* ── Body ───────────────────────────────────────────────────────────── */}
+      {/*  Body  */}
       <main className="flex-1 px-4 py-8 max-w-2xl mx-auto w-full animate-fade-in">
         {/* Page title + refresh */}
         <div className="flex items-center justify-between mb-6">

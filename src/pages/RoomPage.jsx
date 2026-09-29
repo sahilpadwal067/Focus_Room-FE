@@ -6,7 +6,7 @@ import api from '../services/api';
 import { getSocket } from '../services/socket';
 import useAuthStore from '../store/authStore';
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+//  Helpers 
 
 function formatMs(ms) {
   const total = Math.max(0, Math.floor(ms / 1000));
@@ -36,7 +36,7 @@ function statusBadgeClass(status) {
   return 'bg-slate-100 text-slate-500';
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
+// Component 
 
 export default function RoomPage() {
   const { roomCode } = useParams();
@@ -61,7 +61,7 @@ export default function RoomPage() {
   const serverState = useRef(null);
   const intervalRef = useRef(null);
 
-  // ── Local tick ───────────────────────────────────────────────────────────────
+  // Local tick 
   const startTick = useCallback(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
@@ -78,7 +78,7 @@ export default function RoomPage() {
     if (intervalRef.current) { clearInterval(intervalRef.current); intervalRef.current = null; }
   }, []);
 
-  // ── Apply timer-state from server ────────────────────────────────────────────
+  //  Apply timer-state from server 
   const applyTimerState = useCallback((state) => {
     const clockOffset = Date.now() - state.serverNow;
     serverState.current = { ...state, clockOffset };
@@ -99,7 +99,7 @@ export default function RoomPage() {
     getSocket().emit('presence-status', { roomCode, status: myStatus });
   }, [startTick, stopTick, roomCode]);
 
-  // ── Fetch room metadata ──────────────────────────────────────────────────────
+  //  Fetch room metadata 
   useEffect(() => {
     const fetchRoom = async () => {
       try {
@@ -115,7 +115,7 @@ export default function RoomPage() {
     fetchRoom();
   }, [roomCode, navigate]);
 
-  // ── Socket setup ─────────────────────────────────────────────────────────────
+  //  Socket setup 
   useEffect(() => {
     const socket = getSocket();
 
@@ -153,9 +153,8 @@ export default function RoomPage() {
     };
   }, [roomCode, applyTimerState, stopTick]);
 
-  // ── Timer controls ───────────────────────────────────────────────────────────
-  const emit = (event) => getSocket().emit(event, { roomCode });
-  const handleStart  = () => emit('timer-start');
+  const emit = (event, payload = {}) => getSocket().emit(event, { roomCode, ...payload });
+  const handleStart  = (type = 'focus', duration) => emit('timer-start', { sessionType: type, durationMinutes: duration });
   const handlePause  = () => emit('timer-pause');
   const handleResume = () => emit('timer-resume');
   const handleReset  = () => emit('timer-reset');
@@ -208,7 +207,7 @@ export default function RoomPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
-      {/* ── Header ─────────────────────────────────────────────────────────────── */}
+      {/*  Header  */}
       <header className="border-b border-slate-200 bg-white px-6 py-4 flex items-center justify-between sticky top-0 z-10">
         <Link to="/dashboard" className="flex items-center gap-2">
           <div className="w-7 h-7 bg-emerald-500 rounded-lg flex items-center justify-center">
@@ -238,7 +237,7 @@ export default function RoomPage() {
         </div>
       </header>
 
-      {/* ── Main ───────────────────────────────────────────────────────────────── */}
+      {/*  Main */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-10">
         <div className="w-full max-w-lg space-y-4 animate-fade-in">
 
@@ -269,7 +268,7 @@ export default function RoomPage() {
             </div>
           </div>
 
-          {/* Timer card — visual focus */}
+          {/* Timer card  visual focus */}
           <div className="card p-8 text-center shadow-sm">
             {/* Session type pill */}
             <div className="mb-4">
@@ -288,12 +287,16 @@ export default function RoomPage() {
               {timerStatus === 'completed' ? '✅ Session complete!' : timerStatus}
             </p>
 
-            {/* Controls */}
             <div className="flex items-center justify-center gap-3 flex-wrap">
               {canStart && (
-                <button onClick={handleStart} className="btn-primary px-10 py-3 text-base flex items-center gap-2">
-                  ▶ Start
-                </button>
+                <>
+                  <button onClick={() => handleStart('focus')} className="btn-primary px-8 py-3 text-base flex items-center gap-2">
+                    ▶ Focus
+                  </button>
+                  <button onClick={() => handleStart('short_break', 5)} className="btn-secondary px-6 py-3 text-base flex items-center gap-1.5" title="Start a 5-minute break">
+                    ☕ 5m Break
+                  </button>
+                </>
               )}
               {canPause && (
                 <button onClick={handlePause} className="btn-primary px-10 py-3 text-base">
@@ -317,7 +320,7 @@ export default function RoomPage() {
             </p>
           </div>
 
-          {/* ── Presence panel ──────────────────────────────────────────────────── */}
+          {/* Presence panel */}
           <div className="card px-5 py-4 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-sm font-semibold text-slate-700 uppercase tracking-wider">
@@ -329,14 +332,14 @@ export default function RoomPage() {
             </div>
 
             {presenceUsers.length === 0 ? (
-              <p className="text-slate-400 text-sm text-center py-3">No one here yet…</p>
+              <p className="text-slate-400 text-sm text-center py-3">No one here yet</p>
             ) : (
               <ul className="space-y-2">
                 {presenceUsers.map((u) => {
                   const isMe = u.userId === String(user?._id);
                   return (
                     <li
-                      key={u.userId + u.name}
+                      key={u.userId}
                       className="flex items-center justify-between py-2 border-b border-slate-50 last:border-0"
                     >
                       <div className="flex items-center gap-3">

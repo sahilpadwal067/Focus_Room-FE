@@ -1,6 +1,8 @@
 import { create } from 'zustand';
-import api from '../services/api';
 import { destroySocket } from '../services/socket';
+// Import api here for logout only (avoid circular imports in api interceptor)
+// eslint-disable-next-line import/no-cycle
+import api from '../services/api';
 
 const useAuthStore = create((set) => ({
   user: null,
@@ -47,17 +49,30 @@ const useAuthStore = create((set) => ({
       const { data } = await api.get('/auth/me');
       set({ user: data.user, isLoading: false });
     } catch {
-      // Token invalid/expired — clear everything
+      // Token invalid/expired  clear everything
       localStorage.removeItem('token');
       set({ user: null, token: null, isLoading: false });
     }
   },
 
-  // Logout
-  logout: () => {
+  // Logout: notify server to bump tokenVersion (invalidates ALL JWTs for this user),
+  // then clear local state. Fire-and-forget the API call since user wants to be logged out
+  // regardless of transient network errors.
+  logout: async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (token) {
+        await api.post('/auth/logout', null, {
+          headers: { Authorization: `Bearer ${token}` },
+          timeout: 3000,
+        }).catch(() => {});
+      }
+    } catch {
+      // ignore network errors — still clear local state
+    }
     localStorage.removeItem('token');
     destroySocket();
-    set({ user: null, token: null, error: null });
+    set({ user: null, token: null, error: null, isLoading: false });
   },
 
   clearError: () => set({ error: null }),
